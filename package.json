@@ -1,0 +1,40 @@
+{
+  "name": "testing",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -H testing.loc",
+    "build": "next build --debug",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.2.5",
+    "@mui/material": "^5.14.19",
+    "@svgr/webpack": "^5.5.0",
+    "@testing-library/react-hooks": "^8.0.1",
+    "@types/node": "latest",
+    "axios": "^0.24.0",
+    "axios-cache-interceptor": "^1.2.0",
+    "lodash": "^4.17.21",
+    "next": "14.0.3",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-material-ui-carousel": "^3.4.2",
+    "react-multi-carousel": "^2.8.4",
+    "typescript": "^4.6.3",
+    "zustand": "^4.1.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "14.0.3",
+    "eslint-config-prettier": "^8.5.0",
+    "sass": "^1.53.0",
+    "typescript": "^5"
+  }
+}
