@@ -1,11 +1,9 @@
 import { IProduct } from "@/@type/home";
-import Footer from "@/commons/components/Footer";
 import Header from "@/commons/components/Header";
 import SimpleCard from "@/commons/components/SimpleCard";
 import ContentSlider from "@/commons/containers/ContentSlider";
 import Layout from "@/commons/containers/Layouts";
 import { useBoundRecomenStore } from "@/commons/stores";
-import ContentSection from "@/domains/Home/containers/ContentSection";
 import { redirect } from "@/helpers/redirect";
 import { Rating, Stack, styled, Typography } from "@mui/material";
 import { useRouter } from "next/router";

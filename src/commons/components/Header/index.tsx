@@ -78,17 +78,18 @@ export default function Header(props: Props) {
         onBack ? onBack() : handleRedirectToHome();
       }}
     >
-      {onBack && (
+      {onBack ? (
         <ArrowBackIosIcon
           sx={{
             display: { xs: "none", sm: "block" },
             color: "white",
           }}
         />
+      ) : (
+        <StyledLogo sx={{ display: { xs: "block", sm: "block" } }}>
+          <img alt="logo" src="/Logo.png" />
+        </StyledLogo>
       )}
-      <StyledLogo sx={{ display: { xs: "block", sm: "none" } }}>
-        <img alt="logo" src="/Logo.png" />
-      </StyledLogo>
     </IconButton>
   );
 

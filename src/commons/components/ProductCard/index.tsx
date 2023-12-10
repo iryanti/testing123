@@ -10,7 +10,11 @@ import {
 } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getLocalStorage, setLocalStorage } from "@/helpers/local-storage";
+import { IProduct } from "@/@type/home";
+import isEmpty from "@/helpers/is-empty";
+import { useRouter } from "next/router";
 
 const StyleDesc = styled(`div`)({
   width: `100%`,
@@ -23,43 +27,67 @@ const StyleDesc = styled(`div`)({
 });
 
 interface IProductCard {
-  id: number;
-  image: string;
-  title: string;
-  desc: string;
-  category: "anime" | "manga";
-  score?: number;
+  data: IProduct;
+  category?: string;
 }
 
-export default function ProductCard({
-  id,
-  image = "",
-  title = "",
-  desc = "",
-  category = "anime",
-  score = 0,
-}: IProductCard) {
+export default function ProductCard({ data, category }: IProductCard) {
+  const { isReady } = useRouter();
+
   const [fav, setFav] = useState(false);
 
-  const handleFavorite = () => {
+  const handleFavorite = (e: React.ChangeEvent<unknown>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    let dataLocal = getLocalStorage(`favorite`);
+
     if (fav) {
       setFav(false);
+      if (!isEmpty(dataLocal)) {
+        const res = dataLocal.filter((obj: any) => obj.mal_id !== data?.mal_id);
+        setLocalStorage("favorite", res);
+      }
     } else {
       setFav(true);
+      if (!isEmpty(dataLocal)) {
+        dataLocal.push(data);
+        setLocalStorage("favorite", dataLocal);
+      } else {
+        setLocalStorage("favorite", [data]);
+      }
     }
   };
 
-  const handleRedirectPage = () => {
-    if (category === "anime") redirect(`/details/anime/${id}`);
-    if (category === "manga") redirect(`/details/manga/${id}`);
+  const handleRedirectPage = (e: React.ChangeEvent<unknown>) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (category === "anime") redirect(`/details/anime/${data?.mal_id}`);
+    if (category === "manga") redirect(`/details/manga/${data?.mal_id}`);
   };
+
+  useEffect(() => {
+    if (isReady) {
+      if (!isEmpty(getLocalStorage(`favorite`))) {
+        const dataLocal = getLocalStorage(`favorite`);
+        let product = dataLocal?.find(
+          (item: any) => item?.mal_id === data?.mal_id
+        );
+        setFav(!isEmpty(product) ? true : false);
+      }
+    }
+  }, [isReady]);
 
   return (
     <Card
       sx={{ maxWidth: 200, marginBottom: "10px" }}
-      onClick={handleRedirectPage}
+      onClick={(e) => handleRedirectPage(e)}
     >
-      <CardMedia sx={{ height: 140 }} image={image} title={title} />
+      <CardMedia
+        sx={{ height: 140 }}
+        image={data?.images?.webp?.image_url}
+        title={data?.title}
+      />
       <CardContent
         sx={{
           display: "grid",
@@ -73,7 +101,7 @@ export default function ProductCard({
             height: "50px",
           }}
         >
-          {title}
+          {data?.title}
         </Typography>
         <Stack
           direction={`row`}
@@ -84,7 +112,7 @@ export default function ProductCard({
         >
           <Rating
             name="size-medium"
-            value={score / 2}
+            value={data?.score && data?.score / 2}
             precision={0.5}
             readOnly
           />
@@ -93,8 +121,7 @@ export default function ProductCard({
               sx={{ color: `pink`, cursor: "pointer" }}
               titleAccess="Add To Favorite"
               onClick={(e) => {
-                e.preventDefault();
-                handleFavorite();
+                handleFavorite(e);
               }}
             />
           )}
@@ -104,13 +131,12 @@ export default function ProductCard({
               sx={{ color: `pink`, cursor: "pointer" }}
               titleAccess="Remove To Favorite"
               onClick={(e) => {
-                e.preventDefault();
-                handleFavorite();
+                handleFavorite(e);
               }}
             />
           )}
         </Stack>
-        <StyleDesc>{desc}</StyleDesc>
+        <StyleDesc>{data?.synopsis}</StyleDesc>
       </CardContent>
       <CardActions>
         <Button size="small" onClick={handleRedirectPage}>
