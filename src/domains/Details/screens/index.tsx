@@ -91,7 +91,15 @@ export default function Details() {
   }, [isReady, dataAnimeByID]);
 
   return (
-    <Layout header={<Header isActiveID={2} />}>
+    <Layout
+      header={
+        <Header
+          onBack={() => {
+            window.history.back();
+          }}
+        />
+      }
+    >
       <Container direction={`column`} spacing={2} gap={8}>
         <Stack direction={`row`} spacing={4}>
           <StyledImageDetail direction={`column`}>
@@ -137,7 +145,7 @@ export default function Details() {
           )}
           {dataRecomendation?.data?.length !== 0 && (
             <Stack direction={`column`} gap={2}>
-              <StyledSubTitle>Recomendation</StyledSubTitle>
+              <StyledSubTitle>Recomendation {category}</StyledSubTitle>
               <ContentSlider itemsPerSlideDesk={8}>
                 {dataRecomendation?.data?.map((item, i) => {
                   return (

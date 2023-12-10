@@ -13,7 +13,8 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
 import { redirect } from "@/helpers/redirect";
-import { styled } from "@mui/material";
+import { Stack, styled } from "@mui/material";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 
 const StyledLogo = styled(`div`)({
   width: `32px`,
@@ -32,8 +33,9 @@ const StyledMenuItem = styled(Button)<AppBarProps>(({ isactive }) => ({
 }));
 
 interface Props {
-  isActiveID: number;
+  isActiveID?: number;
   window?: () => Window;
+  onBack?: VoidFunction;
 }
 
 const drawerWidth = 240;
@@ -49,7 +51,7 @@ const navItems = [
 ];
 
 export default function Header(props: Props) {
-  const { window, isActiveID } = props;
+  const { window, isActiveID, onBack } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const handleDrawerToggle = () => {
@@ -70,12 +72,29 @@ export default function Header(props: Props) {
     }
   };
 
-  const drawer = (
-    <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
-      <StyledLogo onClick={handleRedirectToHome}>
+  const leftIcon = (
+    <IconButton
+      onClick={() => {
+        onBack ? onBack() : handleRedirectToHome();
+      }}
+    >
+      {onBack && (
+        <ArrowBackIosIcon
+          sx={{
+            display: { xs: "none", sm: "block" },
+            color: "white",
+          }}
+        />
+      )}
+      <StyledLogo sx={{ display: { xs: "block", sm: "none" } }}>
         <img alt="logo" src="/Logo.png" />
       </StyledLogo>
+    </IconButton>
+  );
 
+  const drawer = (
+    <Stack onClick={handleDrawerToggle}>
+      {leftIcon}
       <Divider />
       <List>
         {navItems.map((item, i) => (
@@ -86,7 +105,7 @@ export default function Header(props: Props) {
           </ListItem>
         ))}
       </List>
-    </Box>
+    </Stack>
   );
 
   const container =
@@ -96,7 +115,13 @@ export default function Header(props: Props) {
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <AppBar component="nav">
-        <Toolbar>
+        <Toolbar
+          sx={{
+            textAlign: "center",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -106,17 +131,7 @@ export default function Header(props: Props) {
           >
             <MenuIcon />
           </IconButton>
-          <StyledLogo
-            sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
-          >
-            <img
-              alt="logo"
-              src="/Logo.png"
-              width={`32px`}
-              height={`32px`}
-              onClick={handleRedirectToHome}
-            />
-          </StyledLogo>
+          {leftIcon}
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
             {navItems.map((item, i) => (
               <StyledMenuItem
