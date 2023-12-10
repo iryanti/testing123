@@ -39,7 +39,7 @@ const StyledRating = styled(Stack)({});
 
 export default function Details() {
   const { isReady, query } = useRouter();
-  const [dataDetails, setDataDetails] = useState<IProduct | undefined>();
+  const [dataDetails, setDataDetails] = useState<IProduct>();
   const [category, setCategory] = useState("");
 
   const { dataMangaByID, dataAnimeByID } = useBoundCategoryStore((state) => ({
@@ -105,7 +105,7 @@ export default function Details() {
               <StyledRating direction={`row`} gap={2}>
                 <Rating
                   name="size-medium"
-                  value={dataDetails?.score / 2}
+                  value={dataDetails?.score ? dataDetails?.score / 2 : 0}
                   precision={0.5}
                   readOnly
                 />
@@ -155,6 +155,7 @@ export default function Details() {
                         height: 200,
                         mb: "16px",
                       }}
+                      isProfile={false}
                     />
                   );
                 })}

@@ -6,7 +6,7 @@ export interface IHome {
   isLoadingBanner: boolean;
   characters: {
     data: Char[];
-    pagination: Pagination;
+    pagination: IPagination;
   };
   topAnime: {
     data: IProduct[];

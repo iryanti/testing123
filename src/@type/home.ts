@@ -22,7 +22,7 @@ export type IProduct = {
   background: string;
   synopsis: string;
   images: ImageVariant;
-  score: number;
+  score?: number;
   year: number;
   scored_by: number;
   trailer?: {

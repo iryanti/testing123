@@ -14,6 +14,7 @@ interface IProfileCard {
   follower?: number;
   handleRedirect?: Function;
   sx?: SxProps;
+  isProfile?: boolean;
 }
 
 export default function SimpleCard({
@@ -25,9 +26,15 @@ export default function SimpleCard({
     width: 150,
     height: 200,
   },
+  isProfile = true,
 }: IProfileCard) {
   return (
-    <Card sx={sx} onClick={() => handleRedirect()}>
+    <Card
+      sx={sx}
+      onClick={() => {
+        if (!isProfile) handleRedirect();
+      }}
+    >
       <CardMedia sx={{ height: 140 }} image={image} title={name} />
       <CardContent>
         <Typography>{name}</Typography>

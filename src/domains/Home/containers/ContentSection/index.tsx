@@ -25,7 +25,11 @@ export default function ContentSection({
             <ProductCard
               key={`content-item-${i}`}
               id={item?.mal_id}
-              image={item?.images?.webp?.image_url}
+              image={
+                item?.images?.webp?.image_url
+                  ? item?.images?.webp?.image_url
+                  : ""
+              }
               title={item?.title}
               desc={item?.synopsis}
               category={category}
