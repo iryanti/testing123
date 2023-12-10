@@ -6,7 +6,19 @@ export const createMangaSlice: StateCreator<IManga> = (set) => ({
   // state
   isLoading: false,
   isSuccess: false,
-  dataMangaByID: {},
+  dataMangaByID: {
+    mal_id: 0,
+    title: "",
+    background: "",
+    synopsis: "",
+    images: {
+      jpg: {},
+      webp: {},
+    },
+    score: 0,
+    scored_by: 0,
+    year: 0,
+  },
 
   // actions
   getMangaByID: async (id: number) => {
@@ -15,7 +27,7 @@ export const createMangaSlice: StateCreator<IManga> = (set) => ({
       const res = await apiClient.get(`/v4/manga/${id}/full`);
       if (res?.status === 200) {
         set({
-          dataMangaByID: res?.data,
+          dataMangaByID: res?.data?.data,
         });
       }
     } catch (error) {

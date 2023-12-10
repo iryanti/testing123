@@ -2,14 +2,20 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 
 interface IContentSlider {
+  autoPlay?: boolean;
   children: any;
+  itemsPerSlideDesk?: number;
 }
 
-export default function ContentSlider({ children }: IContentSlider) {
+export default function ContentSlider({
+  autoPlay = true,
+  itemsPerSlideDesk = 5,
+  children,
+}: IContentSlider) {
   const responsive = {
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
-      items: 4,
+      items: itemsPerSlideDesk,
       slidesToSlide: 4, // optional, default to 1.
     },
     tablet: {
@@ -31,7 +37,7 @@ export default function ContentSlider({ children }: IContentSlider) {
       responsive={responsive}
       ssr={true}
       infinite={true}
-      autoPlay={false}
+      autoPlay={autoPlay}
       keyBoardControl={true}
       customTransition="all .5"
       transitionDuration={500}

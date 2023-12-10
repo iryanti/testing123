@@ -1,4 +1,4 @@
-import { Anime } from "@/@type/home";
+import { IProduct } from "@/@type/home";
 import ProductCard from "@/commons/components/ProductCard";
 import ContentSlider from "@/commons/containers/ContentSlider";
 import { Stack, styled } from "@mui/material";
@@ -7,7 +7,7 @@ const Container = styled(Stack)({});
 
 interface IContentSection {
   title: string;
-  data: Anime[];
+  data: IProduct[];
   category: "anime" | "manga";
 }
 
@@ -29,6 +29,7 @@ export default function ContentSection({
               title={item?.title}
               desc={item?.synopsis}
               category={category}
+              score={item?.score}
             />
           );
         })}

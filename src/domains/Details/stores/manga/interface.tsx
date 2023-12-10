@@ -1,6 +1,8 @@
+import { IProduct } from "@/@type/home";
+
 export interface IManga {
   isLoading: boolean;
   isSuccess: boolean;
-  dataMangaByID: {};
+  dataMangaByID: IProduct;
   getMangaByID: Function;
 }

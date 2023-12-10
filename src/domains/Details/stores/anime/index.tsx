@@ -6,7 +6,19 @@ export const createAnimeSlice: StateCreator<IAnime> = (set) => ({
   // state
   isLoading: false,
   isSuccess: false,
-  dataAnimeByID: {},
+  dataAnimeByID: {
+    mal_id: 0,
+    title: "",
+    background: "",
+    synopsis: "",
+    images: {
+      jpg: {},
+      webp: {},
+    },
+    score: 0,
+    scored_by: 0,
+    year: 0,
+  },
 
   // actions
   getAnimeByID: async (id: number) => {
@@ -15,7 +27,7 @@ export const createAnimeSlice: StateCreator<IAnime> = (set) => ({
       const res = await apiClient.get(`/v4/anime/${id}/full`);
       if (res?.status === 200) {
         set({
-          dataAnimeByID: res?.data,
+          dataAnimeByID: res?.data?.data,
         });
       }
     } catch (error) {

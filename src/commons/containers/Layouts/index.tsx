@@ -7,10 +7,6 @@ const StyledContainer = styled("div")({
   backgroundColor: "#F9FAFB",
 });
 
-const StyledContent = styled("div")({
-  padding: "24px",
-});
-
 interface ILayoutProps {
   header?: JSX.Element;
   footer?: JSX.Element;
@@ -25,6 +21,7 @@ function Layout({ header, children, footer }: ILayoutProps): JSX.Element {
         <main
           style={{
             minHeight: "100vh",
+            paddingBottom: "70px",
           }}
         >
           {children}

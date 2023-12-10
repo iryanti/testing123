@@ -1,3 +1,3 @@
-import Details from "@/domains/Details";
+import Details from "@/domains/Details/screens";
 
 export default Details;

@@ -11,8 +11,25 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import { redirect } from "@/helpers/redirect";
+import { styled } from "@mui/material";
+
+const StyledLogo = styled(`div`)({
+  width: `32px`,
+  height: `32px`,
+  cursor: "pointer",
+});
+
+interface AppBarProps {
+  isactive?: string;
+}
+
+const StyledMenuItem = styled(Button)<AppBarProps>(({ isactive }) => ({
+  color: "#fff",
+  background: isactive === "true" ? "rgba(255, 255, 255, 0.1)" : "unset",
+  fontWeight: isactive === "true" ? 700 : 400,
+}));
 
 interface Props {
   isActiveID: number;
@@ -20,7 +37,16 @@ interface Props {
 }
 
 const drawerWidth = 240;
-const navItems = ["Home", "Favorite"];
+const navItems = [
+  {
+    id: 1,
+    label: "Home",
+  },
+  {
+    id: 2,
+    label: "Favorite",
+  },
+];
 
 export default function Header(props: Props) {
   const { window, isActiveID } = props;
@@ -30,15 +56,32 @@ export default function Header(props: Props) {
     setMobileOpen((prevState) => !prevState);
   };
 
+  const handleRedirectToHome = () => {
+    redirect("/");
+  };
+
+  const handleClick = (e: React.ChangeEvent<unknown>, id: number) => {
+    e.preventDefault();
+    switch (id) {
+      case 2:
+        redirect(`/favorite`);
+      default:
+        handleRedirectToHome();
+    }
+  };
+
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
-      <img alt="logo" src="/Logo.png" width={`32px`} height={`32px`} />
+      <StyledLogo onClick={handleRedirectToHome}>
+        <img alt="logo" src="/Logo.png" />
+      </StyledLogo>
+
       <Divider />
       <List>
-        {navItems.map((item) => (
-          <ListItem key={item} disablePadding>
+        {navItems.map((item, i) => (
+          <ListItem key={i} disablePadding>
             <ListItemButton sx={{ textAlign: "center" }}>
-              <ListItemText primary={item} />
+              <ListItemText primary={item?.label} />
             </ListItemButton>
           </ListItem>
         ))}
@@ -63,18 +106,26 @@ export default function Header(props: Props) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography
-            variant="h6"
-            component="div"
+          <StyledLogo
             sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
           >
-            <img alt="logo" src="/Logo.png" width={`32px`} height={`32px`} />
-          </Typography>
+            <img
+              alt="logo"
+              src="/Logo.png"
+              width={`32px`}
+              height={`32px`}
+              onClick={handleRedirectToHome}
+            />
+          </StyledLogo>
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
-            {navItems.map((item) => (
-              <Button key={item} sx={{ color: "#fff" }}>
-                {item}
-              </Button>
+            {navItems.map((item, i) => (
+              <StyledMenuItem
+                key={i}
+                isactive={isActiveID === item?.id ? "true" : "false"}
+                onClick={(e) => handleClick(e, item?.id)}
+              >
+                {item?.label}
+              </StyledMenuItem>
             ))}
           </Box>
         </Toolbar>
@@ -86,7 +137,7 @@ export default function Header(props: Props) {
           open={mobileOpen}
           onClose={handleDrawerToggle}
           ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
+            keepMounted: true,
           }}
           sx={{
             display: { xs: "block", sm: "none" },
