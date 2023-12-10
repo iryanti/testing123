@@ -27,7 +27,7 @@ export default function SimpleCard({
   },
 }: IProfileCard) {
   return (
-    <Card sx={sx} onClick={() => handleRedirect}>
+    <Card sx={sx} onClick={() => handleRedirect()}>
       <CardMedia sx={{ height: 140 }} image={image} title={name} />
       <CardContent>
         <Typography>{name}</Typography>
