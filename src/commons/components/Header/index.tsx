@@ -66,7 +66,7 @@ export default function Header(props: Props) {
     e.preventDefault();
     switch (id) {
       case 2:
-        redirect(`/favorite`);
+        redirect(`/favorites`);
       default:
         handleRedirectToHome();
     }
